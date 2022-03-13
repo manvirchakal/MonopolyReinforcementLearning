@@ -20,10 +20,10 @@ def decide_first(player1,player2,dice):
 		player2.turn_pos = 1
 		return
 
-	
+
 
 def take_turn(player,dice,board):
-	roll = dice.roll()
+	roll, double = dice.roll()
 
 	player.move(roll)
 	index = player.position
@@ -59,11 +59,17 @@ def take_turn(player,dice,board):
 		board.tiles[index].buy_property(player)
 		return
 
-	elif board.tiles[index].is_owned:
+	if board.tiles[index].is_owned:
 		owner = board.tiles[index].owner
 		player.take_cash(board.tiles[player.get_position()].get_rent(owner,board))
 		owner.add_cash(board.tiles[player.get_position()].get_rent(owner,board))
 		return
+
+	if double:
+		print("\n\n\n\n\n\n\nDOUBLE!!!!!!!!!!\n\n\n\n\n\n\n")
+		take_turn(player, dice, board)
+
+
 
 def display_stats(player):
 	properties = []
@@ -79,7 +85,6 @@ def display_stats(player):
 
 
 board = Board()
-print(board.get_tile_name(39))
 dice = Dice()
 
 player1 = Player(1500, 'Manny')
@@ -88,8 +93,9 @@ player2 = Player(1500, 'Ananty')
 prompt = input('your move: ')
 
 decide_first(player1, player2, dice)
+num_turns = 0
 
-while prompt == 'r':
+while prompt == 'r' and num_turns < 50:
 	if player1.turn_pos > player2.turn_pos:
 		take_turn(player1, dice, board)
 		display_stats(player1)
@@ -101,5 +107,7 @@ while prompt == 'r':
 		display_stats(player2)
 		take_turn(player1, dice, board)
 		display_stats(player1)
+
+	num_turns += 1
 
 	prompt = input('your move: ')
