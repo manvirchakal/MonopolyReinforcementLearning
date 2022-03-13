@@ -99,22 +99,22 @@ class Board():
 		kentave = Street(21,'Kentucky Ave',220,18,'Red',90,250,700,875,1050,150,3)
 		chance2 = Square(22, 'Chance')
 		indave = Street(23,'Indiana Ave',220,18,'Red',90,250,700,875,1050,150,3)
-		illave = Street(23,'Illinois Ave',240,20,'Red',100,300,750,925,1100,150,3)
-		rail3 = Property(24,'B&O Railroad',200,25,'Railroad',4)
-		atlave = Street(23,'Atlantic Ave',260,22,'Yellow',110,330,800,975,1150,150,3)
-		ventave = Street(24,'Ventor Ave',260,22,'Yellow',110,330,800,975,1150,150,3)
-		water = Property(25,'Water Works',150,0,'Utility',2)
-		marvgard = Street(26,'Marvin Gardens',280,24,'Yellow',120,360,850,1025,1200,150,3)
-		gotojail = Square(27, 'Go To Jail')
-		pacave = Street(28,'Pacific Ave',300,26,'Green',130,390,900,1100,1275,200,3)
-		ncarolave = Street(29, 'North Carolina Ave',300,26,'Green',130,390,900,1100,1275,200,3)
-		commchest3 = Square(30,'Comm Chest')
-		pennave = Street(31,'Pennsylvania Ave',320,28,'Green',150,450,1000,1200,1400,200,3)
-		rail4 = Property(32,'Short Line',200,25,'Railroad',4)
-		chance3 = Square(33, 'Chance')
-		parkplace = Street(34,'Park Place',350,35,'Purple',175,500,1100,1300,1500,200,2)
-		luxtax = Square(35,'Luxury Tax')
-		boardwalk = Street(36,'Boardwalk',400,50,'Purple',200,600,1400,1700,2000,200,2)
+		illave = Street(24,'Illinois Ave',240,20,'Red',100,300,750,925,1100,150,3)
+		rail3 = Property(25,'B&O Railroad',200,25,'Railroad',4)
+		atlave = Street(26,'Atlantic Ave',260,22,'Yellow',110,330,800,975,1150,150,3)
+		ventave = Street(27,'Ventor Ave',260,22,'Yellow',110,330,800,975,1150,150,3)
+		water = Property(28,'Water Works',150,0,'Utility',2)
+		marvgard = Street(29,'Marvin Gardens',280,24,'Yellow',120,360,850,1025,1200,150,3)
+		gotojail = Square(30, 'Go To Jail')
+		pacave = Street(31,'Pacific Ave',300,26,'Green',130,390,900,1100,1275,200,3)
+		ncarolave = Street(32, 'North Carolina Ave',300,26,'Green',130,390,900,1100,1275,200,3)
+		commchest3 = Square(33,'Comm Chest')
+		pennave = Street(34,'Pennsylvania Ave',320,28,'Green',150,450,1000,1200,1400,200,3)
+		rail4 = Property(35,'Short Line',200,25,'Railroad',4)
+		chance3 = Square(36, 'Chance')
+		parkplace = Street(37,'Park Place',350,35,'Purple',175,500,1100,1300,1500,200,2)
+		luxtax = Square(38,'Luxury Tax')
+		boardwalk = Street(39,'Boardwalk',400,50,'Purple',200,600,1400,1700,2000,200,2)
 
 		self.tiles = [GO,
 				medave,
@@ -158,4 +158,13 @@ class Board():
 				boardwalk]
 
 	def get_tile_name(self,index):
+		if index == 10:
+			return self.tiles[index][0].name
+
+		if index == 0:
+			return 'GO'
+
 		return self.tiles[index].name
+
+	def get_num_tiles(self):
+		print(len(self.tiles))
