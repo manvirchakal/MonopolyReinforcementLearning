@@ -168,3 +168,6 @@ class Board():
 
 	def get_num_tiles(self):
 		print(len(self.tiles))
+
+	def get_type_square(self, index):
+		return type(self.tiles[index])

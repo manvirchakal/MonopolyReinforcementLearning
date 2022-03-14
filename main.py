@@ -95,19 +95,29 @@ prompt = input('your move: ')
 decide_first(player1, player2, dice)
 num_turns = 0
 
-while prompt == 'r' and num_turns < 50:
-	if player1.turn_pos > player2.turn_pos:
-		take_turn(player1, dice, board)
-		display_stats(player1)
-		take_turn(player2, dice, board)
-		display_stats(player2)
+while num_turns < 50:
+	while prompt == 'r':
+		if player1.turn_pos > player2.turn_pos:
+			take_turn(player1, dice, board)
+			display_stats(player1)
+			take_turn(player2, dice, board)
+			display_stats(player2)
 
-	if player1.turn_pos < player2.turn_pos:
-		take_turn(player2, dice, board)
-		display_stats(player2)
-		take_turn(player1, dice, board)
-		display_stats(player1)
+		if player1.turn_pos < player2.turn_pos:
+			take_turn(player2, dice, board)
+			display_stats(player2)
+			take_turn(player1, dice, board)
+			display_stats(player1)
 
-	num_turns += 1
+		num_turns += 1
 
-	prompt = input('your move: ')
+		prompt = input('your move: ')
+
+	while prompt == 'b':
+		if player1.turn_pos > player2.turn_pos:
+			while board.get_type_square(player.get_position()) == Square:
+				prompt = input("not valid. Try again: ")
+
+			if (board.get_type_square(player.get_position()) == Property or board.get_type_square(player.get_position()) == Street) and not board.tiles[player.get_position()].is_owned::
+				board.tiles[player1.get_position()].buy_property(player1)
+
