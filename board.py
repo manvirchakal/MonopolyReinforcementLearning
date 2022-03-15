@@ -87,8 +87,8 @@ class Board():
 		chance1 = Square(7, 'Chance',(160,450))
 		vermave = Street(8,'Vermont Ave',100,6,'Blue',30,90,270,400,550,50,3,(110,450))
 		connave = Street(9,'Connecticut Ave',120,8,'Blue',40,100,300,450,600,50,3,(70,450))
-		justv = Square(10,'Just Visiting',(50,430))
-		jail = Square(10, 'Jail',(20,470))
+		justv = Square(10,'Just Visiting',(0,470))
+		jail = Square(10, 'Jail',(50,430))
 		scharlep = Street(11,'St. Charles Place',140,10,'Pink',50,150,450,625,750,100,3,(30,410))
 		electc = Property(12,'Electric Comp',150,0,'Utility',2,(30,360))
 		statesave = Street(13,'States Avenue',140,10,'Pink',50,150,450,625,750,100,3,(30,320))
@@ -178,7 +178,9 @@ class Board():
 	def get_square(self,index):
 		if type(self.tiles[index]) is tuple:
 			return self.tiles[index][0]
+
 		if type(self.tiles[index]) is list:
 			return self.tiles[index][0]
+
 		else:
 			return self.tiles[index]
