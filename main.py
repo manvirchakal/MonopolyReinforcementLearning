@@ -10,6 +10,9 @@ pygame.display.set_caption("Monopoly")
 
 FPS = 60
 WHITE = (255,255,255)
+pygame.init()
+STATS_FONTS1 = pygame.font.SysFont('comicsans', 40)
+STATS_FONTS2 = pygame.font.SysFont('comicsans', 13)
 BOARD_IMAGE = pygame.image.load(os.path.join('Assets','board.jpeg'))
 BOARD = pygame.transform.scale(BOARD_IMAGE, (500,500))
 
@@ -59,6 +62,7 @@ def take_turn(player,dice,board):
 		owner = board.tiles[index].owner
 		player.take_cash(board.tiles[player.get_position()].get_rent(owner,board))
 		owner.add_cash(board.tiles[player.get_position()].get_rent(owner,board))
+		print(f"{player.get_name()} paid {board.tiles[player.get_position()].get_rent(owner,board)}")
 		return
 
 	if double:
@@ -90,6 +94,36 @@ def draw_window(player1,player2,red,green,board):
 	WIN.blit(BOARD, (0,0))
 	pygame.draw.rect(WIN,(255,0,0),red)
 	pygame.draw.rect(WIN,(0,255,0),green)
+
+	player1_name = STATS_FONTS1.render(player1.get_name(), 1, (0,0,0))
+	player1_cash = STATS_FONTS1.render(f"${str(player1.get_cash())}", 1, (0,0,0))
+	'''
+	max_length = 80
+	player1_prop_slice = []
+	props = f"{player1.get_owned_properties()}"
+	count = 0
+	if len(props) > 80:
+		while len(props) > 80:
+			player1_prop_slice.append(props[count:count+80])
+			count += 80
+		if len(props)%80 < 80:
+			player1_prop_slice.append(props[0:-(len(props)%80)])
+
+	delta_y = 50
+	count = 0
+	for properties in player1_prop_slice:
+		player1_prop = STATS_FONTS2.render(player1_prop_slice[count], 1, (0,0,0))
+		WIN.blit(player1_prop, (500,delta_y))
+		delta_y += 15
+		count += 1
+	'''
+	player2_name = STATS_FONTS1.render(player2.get_name(), 1, (0,0,0))
+	player2_cash = STATS_FONTS1.render(f"${str(player2.get_cash())}", 1, (0,0,0))
+	WIN.blit(player1_name, (500,0))
+	WIN.blit(player1_cash, (650,0))
+	WIN.blit(player2_name, (500,250))
+	WIN.blit(player2_cash, (650,250))
+
 	pygame.display.update()
 
 
@@ -125,20 +159,28 @@ def main():
 				if event.key == pygame.K_r:
 					first = False 
 					decide_first(player1, player2, dice)
+					print(player1.get_owned_properties())
+					print(f"{player1.get_name()}: {player1.get_owned_properties()}")
+					print(player2.get_owned_properties())
+					print(f"{player2.get_name()}: {player2.get_owned_properties()}")
 
 			if event.type == pygame.KEYDOWN: 
 				if event.key == pygame.K_r:
 					if player1.turn_pos:
 						take_turn(player1, dice, board)
+						print(f"{player1.get_name()}: {player1.get_owned_properties()}")
 						if event.type == pygame.KEYDOWN: 
 							if event.key == pygame.K_r:
 								take_turn(player2, dice, board)
+								print(f"{player2.get_name()}: {player2.get_owned_properties()}")
 					
 					if player2.turn_pos:
 						take_turn(player2, dice, board)
+						print(f"{player2.get_name()}: {player2.get_owned_properties()}")
 						if event.type == pygame.KEYDOWN: 
 							if event.key == pygame.K_r:
 								take_turn(player1, dice, board)
+								print(f"{player1.get_name()}: {player1.get_owned_properties()}")
 
 			handle_stats(player1, player2)
 			draw_window(player1,player2,red,green,board)	

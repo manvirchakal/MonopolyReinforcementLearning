@@ -4,6 +4,9 @@ class Square():
 		self.name = name 
 		self.coord = coord
 
+	def get_name(self):
+		return self.name
+
 
 class Property(Square):
 	def __init__(self,index,name,price,rent,color,num_colors,coord,is_mortgaged=False):
@@ -17,6 +20,9 @@ class Property(Square):
 		self.owner = None
 		self.num_colors = num_colors
 		self.coord = coord
+
+	def get_name(self):
+		return self.name
 
 	def mortgage(self, player):
 		if self.is_mortgaged == False:

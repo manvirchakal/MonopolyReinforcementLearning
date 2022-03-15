@@ -7,6 +7,9 @@ class Player():
 		self.cards = []
 		self.turn_pos = 0
 
+	def get_name(self):
+		return self.name	
+
 	def get_position(self):
 		return self.position
 
@@ -25,3 +28,13 @@ class Player():
 
 	def take_cash(self, amount):
 		self.cash -= amount
+
+	def get_cash(self):
+		return self.cash
+
+	def get_owned_properties(self):
+		props = []
+		for prop in self.owned_properties:
+			props.append(prop.get_name())
+
+		return props
