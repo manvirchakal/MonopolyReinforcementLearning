@@ -6,6 +6,7 @@ class Player():
 		self.owned_properties = []
 		self.cards = []
 		self.turn_pos = 0
+		self.mortgage_screen_bool = False
 
 	def get_name(self):
 		return self.name	
@@ -38,3 +39,6 @@ class Player():
 			props.append(prop.get_name())
 
 		return props
+
+	def get_property_objects(self):
+		return self.owned_properties

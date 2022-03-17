@@ -21,7 +21,7 @@ def handle_stats(player1,player2):
 	pass
 
 
-def take_turn(player,dice,board):
+def take_turn(player,dice,board,mortgage_screen):
 	roll, double = dice.roll()
 
 	player.move(roll)
@@ -29,41 +29,49 @@ def take_turn(player,dice,board):
 	print(f"roll was {roll} and {player.name} is now at {board.get_tile_name(index)}")
 
 	if board.get_tile_name(index) == 'Comm Chest':
-		return
+		return False
 
 	if board.get_tile_name(index) == 'Chance':
-		return
+		return False
 
 	if index == 0:
-		return
+		return False
 
 	if index == 4:
 		player.take_cash(200)
-		return
+		return False
 
 	if index == 38:
 		player.take_cash(100)
-		return
+		return False
 
 	if index == 10:
-		return
+		return False
 
 	if index == 20:
-		return
+		return False
 
 	if board.get_tile_name(index) == 'Go To Jail':
-		return
+		return False
 
 	if not board.tiles[index].is_owned:
-		board.tiles[index].buy_property(player)
-		return
+		price = board.tiles[index].get_price()
+		cash = player.get_cash()
+		if cash >= price:
+			board.tiles[index].buy_property(player)
+			return False
+
+		else: 
+			print("CHAALLLLL PAAAAIIIIYAAAAAA OOOOYEEEEEE!!!!!")
+			player.mortgage_screen_bool = True
+			return True
 
 	if board.tiles[index].is_owned:
 		owner = board.tiles[index].owner
 		player.take_cash(board.tiles[player.get_position()].get_rent(owner,board))
 		owner.add_cash(board.tiles[player.get_position()].get_rent(owner,board))
 		print(f"{player.get_name()} paid {board.tiles[player.get_position()].get_rent(owner,board)}")
-		return
+		return False
 
 	if double:
 		print("\n\n\n\n\n\n\nDOUBLE!!!!!!!!!!\n\n\n\n\n\n\n")
@@ -138,6 +146,8 @@ def main():
 	
 	clock = pygame.time.Clock()
 	run = True  
+	mortgage_screen = False
+	index = 0
 	while run:
 		clock.tick(FPS)
 		for event in pygame.event.get(): 
@@ -164,23 +174,64 @@ def main():
 					print(player2.get_owned_properties())
 					print(f"{player2.get_name()}: {player2.get_owned_properties()}")
 
-			if event.type == pygame.KEYDOWN: 
+			if event.type == pygame.KEYDOWN and not mortgage_screen: 
 				if event.key == pygame.K_r:
 					if player1.turn_pos:
-						take_turn(player1, dice, board)
+						mortgage_screen = take_turn(player1, dice, board, mortgage_screen)
 						print(f"{player1.get_name()}: {player1.get_owned_properties()}")
 						if event.type == pygame.KEYDOWN: 
 							if event.key == pygame.K_r:
-								take_turn(player2, dice, board)
+								mortgage_screen = take_turn(player2, dice, board, mortgage_screen)
 								print(f"{player2.get_name()}: {player2.get_owned_properties()}")
 					
 					if player2.turn_pos:
-						take_turn(player2, dice, board)
+						mortgage_screen = take_turn(player2, dice, board, mortgage_screen)
 						print(f"{player2.get_name()}: {player2.get_owned_properties()}")
 						if event.type == pygame.KEYDOWN: 
 							if event.key == pygame.K_r:
-								take_turn(player1, dice, board)
+								mortgage_screen = take_turn(player1, dice, board, mortgage_screen)
 								print(f"{player1.get_name()}: {player1.get_owned_properties()}")
+
+			if event.type == pygame.KEYDOWN and mortgage_screen and player1.mortgage_screen_bool: 
+				props = player1.get_property_objects()
+				if event.key == pygame.K_UP:
+					if index + 1 < len(props):
+						index += 1
+
+					print(f"do you want to mortgage {props[index].get_name()}?")
+
+				if event.key == pygame.K_DOWN: 
+					if index - 1 > 0:
+						index -=1
+
+					print(f"do you want to mortgage {props[index].get_name()}?")
+
+				if event.key == pygame.K_SPACE:
+					props[index].mortgage(player1)
+					print(f"{props[index].get_name()} has been mortgaged")
+					player1.mortgage_screen_bool = False
+					mortgage_screen = False
+
+			if event.type == pygame.KEYDOWN and mortgage_screen and player2.mortgage_screen_bool: 
+				props = player2.get_property_objects()
+				if event.key == pygame.K_UP:
+					if index + 1 < len(props):
+						index += 1
+
+					print(f"do you want to mortgage {props[index].get_name()}?")
+
+				if event.key == pygame.K_DOWN: 
+					if index - 1 > 0:
+						index -=1
+
+					print(f"do you want to mortgage {props[index].get_name()}?")
+
+				if event.key == pygame.K_SPACE:
+					props[index].mortgage(player2)
+					print(f"{props[index].get_name()} has been mortgaged")
+					player2.mortgage_screen_bool = False
+					mortgage_screen = False
+					break
 
 			handle_stats(player1, player2)
 			draw_window(player1,player2,red,green,board)	

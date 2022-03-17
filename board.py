@@ -22,7 +22,11 @@ class Property(Square):
 		self.coord = coord
 
 	def get_name(self):
-		return self.name
+		if self.is_mortgaged:
+			return f"{self.name}(mortgaged)"
+
+		else:
+			return self.name
 
 	def mortgage(self, player):
 		if self.is_mortgaged == False:
@@ -58,6 +62,12 @@ class Property(Square):
 			rent = self.rent*2 
 
 		return rent
+
+	def get_owner(self):
+		return self.owner
+
+	def get_price(self):
+		return self.price
 
 
 
